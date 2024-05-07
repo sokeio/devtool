@@ -25,9 +25,14 @@
 }" x-init="initField">
     <button x-on:click="addField" class="btn btn-primary btn-sm  mb-2 p-">Add Field</button>
     <button x-on:click="addUIFromFields" class="btn btn-primary btn-sm  mb-2 p-">Add UI from Fields</button>
-    <div class="row" >
+    <div class="row" wire:sortable x-data="{
+        onSortable(items) {
+            console.log('sortable');
+            console.log(items);
+        }
+    }">
         <template x-for="field in dataFields">
-            <div class="col-6">
+            <div class="col-6" wire:sortable.item :data-sortable-id="field.id">
                 <div class="card mb-2 p-1 position-relative">
                     <button class="btn btn-danger btn-sm position-absolute top-0 end-0"
                         @click="dataFields.splice(dataFields.indexOf(field), 1)">X</button>
