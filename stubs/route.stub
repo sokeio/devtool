@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Sokeio\Devtool\Livewire\##$name$##\##$name$##Form;
-use Sokeio\Devtool\Livewire\##$name$##\##$name$##Table;
+use ##$namespace$##\Livewire\##$name$##\##$name$##Form;
+use ##$namespace$##\Livewire\##$name$##\##$name$##Table;
 
 Route::group(['as' => '##$route_prefix$##', 'prefix' => '##$prefix_name$##'], function () {
     routeCrud('##$route_name$##', ##$name$##Table::class, ##$name$##Form::class);

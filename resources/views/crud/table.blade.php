@@ -16,15 +16,27 @@
                 return {
                     id: 'row-' + (new Date()).getTime() + '-' + index,
                     name: field.name,
-                    title: field.name,
+                    title: field.title??field.name,
                     uiType: $wire.dbColumnTypes[field.type_name],
+                    options: []
+                }
+            });
+        },
+        addUIFromForm() {
+            dataFields = $wire.data.form.map((field, index) => {
+                return {
+                    id: 'row-' + (new Date()).getTime() + '-' + index,
+                    name: field.name,
+                    title: field.title ?? field.name,
+                    uiType: field.uiType,
                     options: []
                 }
             });
         }
 }" x-init="initField">
     <button x-on:click="addField" class="btn btn-primary btn-sm  mb-2 p-">Add Field</button>
-    <button x-on:click="addUIFromFields" class="btn btn-primary btn-sm  mb-2 p-">Add UI from Fields</button>
+    <button x-on:click="addUIFromFields" class="btn btn-warning btn-sm  mb-2 p-">Add UI from Fields</button>
+    <button x-on:click="addUIFromForm" class="btn btn-success btn-sm  mb-2 p-">Add UI from Form</button>
     <div class="row" wire:sortable x-data="{
         onSortable(items) {
             let temp = items.map(item => {

@@ -76,7 +76,7 @@ class GenerateCrud
             $content = str_replace($key, $value, $content);
         }
         $content = str_replace('##$formUI$##', $this->getFormUI(), $content);
-        file_put_contents($this->path . '/' . ucfirst($this->crud->name) . 'Form.php', $content);
+        file_put_contents($this->path . '/' . ucfirst($this->crud->name) . 'Form.php', trim($content));
     }
     private function getColumnUI()
     {
@@ -94,6 +94,6 @@ class GenerateCrud
             $content = str_replace($key, $value, $content);
         }
         $content = str_replace('##$columns$##', $this->getColumnUI(), $content);
-        file_put_contents($this->path . '/' . ucfirst($this->crud->name) . 'Table.php', $content);
+        file_put_contents($this->path . '/' . ucfirst($this->crud->name) . 'Table.php', trim($content));
     }
 }
