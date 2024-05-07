@@ -5,6 +5,7 @@ namespace Sokeio\Devtool\Livewire\Crud;
 use Illuminate\Support\Facades\Schema;
 use Sokeio\Components\Form;
 use Sokeio\Components\UI;
+use Sokeio\Devtool\GenerateCrud;
 use Sokeio\Devtool\Models\Crud;
 use Sokeio\Facades\Module;
 use Sokeio\Facades\Platform;
@@ -62,6 +63,7 @@ class CrudForm extends Form
         'file' => [],
         'image' => [],
     ];
+
     protected function getModel()
     {
         return Crud::class;
@@ -93,7 +95,50 @@ class CrudForm extends Form
         }
         $this->showMessage(__('Fields loaded successfully.'));
     }
+    public function generateCrud()
+    {
+        $this->skipClose = true;
+        $this->doSave();
+        GenerateCrud::generate($this->dataId);
+        $this->showMessage(__('Crud generated successfully.'));
+    }
+    protected function footerUI()
+    {
+        return [
+            UI::Div([
+                UI::button(__('Save'))->wireClick('doSave()'),
+                UI::button(__('Generate Crud'))->success()->wireClick('generateCrud()'),
+                UI::button(__('Download Json'))->warning()->xClick('downloadJson()'),
+                UI::button(__('Import Json'))->danger()->xClick('importJson()'),
 
+            ])->className('p-2 text-center')
+                ->xData("{
+                    importJson() {
+                        let element = document.createElement('input');
+                        element.setAttribute('type', 'file');
+                        element.click();
+                        element.onchange = () => {
+                            
+                            let file = element.files[0];
+                            let reader = new FileReader();
+                            reader.readAsText(file, 'UTF-8');
+                            reader.onload = event => {
+                                let data = JSON.parse(event.target.result);
+                                \$wire.data = data;
+                            }
+                        }
+                    },
+                    downloadJson() {
+                        let text = JSON.stringify(\$wire.data);
+                        let filename = 'crud_'+\$wire.data.name+'_' + new Date().getTime() + '.json';
+                        let element = document.createElement('a');
+                        element.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(text));
+                        element.setAttribute('download', filename);
+                        element.click();
+                    }
+            }")
+        ];
+    }
     protected function formUI()
     {
         return UI::container([
@@ -149,7 +194,7 @@ class CrudForm extends Form
                         ->col12()
                         ->expanded(),
                     UI::templateField('table')
-                        ->label(__('Form UI'))
+                        ->label(__('Table UI'))
                         ->templateView('devtool::crud.table')
                         ->valueDefault(function () {
                             return [];

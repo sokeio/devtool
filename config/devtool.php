@@ -2,7 +2,9 @@
 
 return [
     'name' => 'Devtool',
-    'commands' => [],
+    'commands' => [
+        \Sokeio\Devtool\Console\Test::class
+    ],
     'fields' => [],
     'shortcodes' => [],
     'actions' => [],

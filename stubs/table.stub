@@ -1,0 +1,32 @@
+<?php
+namespace ##$namespace$##\Livewire\##$name$##;
+
+use Sokeio\Components\Table;
+use Sokeio\Components\UI;
+use ##$model$##;
+
+class ##$name$##Table extends Table
+{
+    protected function getTitle()
+    {
+        return __('##$name$##');
+    }
+    protected function getRoute()
+    {
+        return '##$route$##';
+    }
+    protected function getModel()
+    {
+        return ##$model_name$##::class;
+    }
+    protected function getModalSize($isNew = true, $row = null)
+    {
+        return UI::MODAL_EXTRA_LARGE;
+    }
+    protected function getColumns()
+    {
+        return [
+            ##$columns$##
+        ];
+    }
+}

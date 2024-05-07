@@ -18,6 +18,7 @@
                     name: field.name,
                     title: field.name,
                     uiType: $wire.dbColumnTypes[field.type_name],
+                    
                     options: []
                 }
             });
