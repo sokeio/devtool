@@ -1,0 +1,12 @@
+{
+    "id":"sokeio/devtool",
+    "name": "Devtool",
+    "version":"v1.0.0",
+    "alias": "devtool",
+    "description": "",
+    "keywords": [],
+    "priority": 200,
+    "aliases": {},
+    "namespace":"Sokeio\\Devtool",
+    "requires": []
+}
