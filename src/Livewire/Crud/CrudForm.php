@@ -152,7 +152,7 @@ class CrudForm extends Form
                                 'title' => $item->name
                             ];
                         });
-                    })->col3(),
+                    })->col2(),
                     UI::select('model')->label(__('Model'))->dataSource(function () {
                         return [
                             [
@@ -167,9 +167,8 @@ class CrudForm extends Form
                         ];
                     })->afterUI([
                         UI::button(__('Load Fields'))->wireClick('loadFields')
-                    ])->col5(),
-                    UI::text('route')->label(__('Route'))->col4(),
-                    UI::text('table_name')->label(__('Table Name'))->col4()
+                    ])->col4(),
+                    UI::text('table_name')->label(__('Table Name'))->col3()
                         ->attributeInput('
                         x-bind:disabled="!($wire.data.model===\'\'|| $wire.data.model===undefined)"
                         ')
@@ -177,6 +176,7 @@ class CrudForm extends Form
                             UI::button(__('Generate Model'))->wireClick('generateModel()')
                                 ->attribute(' x-show="$wire.data.model===\'\'|| $wire.data.model===undefined" ')
                         ])->valueDefault(''),
+                        UI::text('route')->label(__('Route'))->col3(),
                     UI::templateField('fields')
                         ->label(__('Fields'))
                         ->templateView('devtool::crud.fields')

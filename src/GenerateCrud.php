@@ -25,21 +25,40 @@ class GenerateCrud
     public function run()
     {
         if (!File::exists($this->path)) {
-            File::makeDirectory($this->path,0775, true);
+            File::makeDirectory($this->path, 0775, true);
         }
         $this->generateForm();
         $this->generateTable();
+        $this->generateRoute();
     }
     private function getData()
     {
         $models = explode('\\', $this->crud->model);
+        $routes = explode('.', $this->crud->route);
+        $route_prefix = '';
+        for ($i = 0; $i < count($routes) - 1; $i++) {
+            $route_prefix .= $routes[$i] . '.';
+        }
+
         return [
             '##$namespace$##' =>  $this->module->getNamespaceInfo(),
             '##$name$##' => $this->crud->name,
             '##$model$##' => $this->crud->model,
             '##$model_name$##' =>  $models[count($models) - 1],
             '##$route$##' => $this->crud->route,
+            '##$route_name$##' => $routes[count($routes) - 1],
+            '##$route_prefix$##' =>  $route_prefix,
+            '##$prefix_name$##' => str($this->module->getName())->lower(),
         ];
+    }
+    private function generateRoute()
+    {
+        $content = file_get_contents(__DIR__ . '/../stubs/route.stub');
+        $data = $this->getData();
+        foreach ($data as $key => $value) {
+            $content = str_replace($key, $value, $content);
+        }
+        file_put_contents($this->module->getPath('routes/admin/') . str($this->crud->name)->lower() . '.php', $content);
     }
     private function getFormUI()
     {
