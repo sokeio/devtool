@@ -20,6 +20,10 @@ class CrudTable extends Table
     {
         return Crud::class;
     }
+    protected function getModalSize($isNew = true, $row = null)
+    {
+        return UI::MODAL_EXTRA_LARGE;
+    }
     protected function getColumns()
     {
         return [
