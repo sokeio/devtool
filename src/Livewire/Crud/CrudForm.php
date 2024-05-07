@@ -78,11 +78,14 @@ class CrudForm extends Form
     {
         $this->skipRender();
         if ($this->data->model && $model = app($this->data->model)) {
-            $columns = Schema::getColumns($model->getTable());
-            $this->data->fields = collect($columns)->map(function ($item) {
+            $this->data->table_name = $model->getTable();
+            $columns = Schema::getColumns($this->data->table_name);
+            $fillable = $model->getFillable();
+            $this->data->fields = collect($columns)->map(function ($item) use ($fillable) {
                 $type = $item['type'];
                 return [
                     ...$item,
+                    'fillable' => in_array($item['name'], $fillable),
                     'type' => trim($item['type_name']),
                     'length' => $this->getLengthFromType($type),
                 ];
@@ -121,6 +124,14 @@ class CrudForm extends Form
                         UI::button(__('Load Fields'))->wireClick('loadFields')
                     ])->col5(),
                     UI::text('route')->label(__('Route'))->col4(),
+                    UI::text('table_name')->label(__('Table Name'))->col4()
+                        ->attributeInput('
+                        x-bind:disabled="!($wire.data.model===\'\'|| $wire.data.model===undefined)"
+                        ')
+                        ->afterUI([
+                            UI::button(__('Generate Model'))->wireClick('generateModel()')
+                                ->attribute(' x-show="$wire.data.model===\'\'|| $wire.data.model===undefined" ')
+                        ])->valueDefault(''),
                     UI::templateField('fields')
                         ->label(__('Fields'))
                         ->templateView('devtool::crud.fields')
@@ -132,6 +143,14 @@ class CrudForm extends Form
                     UI::templateField('form')
                         ->label(__('Form UI'))
                         ->templateView('devtool::crud.form')
+                        ->valueDefault(function () {
+                            return [];
+                        })
+                        ->col12()
+                        ->expanded(),
+                    UI::templateField('table')
+                        ->label(__('Form UI'))
+                        ->templateView('devtool::crud.table')
                         ->valueDefault(function () {
                             return [];
                         })

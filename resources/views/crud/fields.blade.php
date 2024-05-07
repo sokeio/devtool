@@ -25,6 +25,8 @@
                 <th style="width: 120px">length</th>
                 <th style="width: 80px">nullable</th>
                 <th style="width: 80px">auto_increment</th>
+                <th style="width: 80px">fillable</th>
+
                 <th style="width: 120px">default</th>
                 <th style="min-width: 120px">comment</th>
                 <th></th>
@@ -50,6 +52,9 @@
                     </td>
                     <td class="text-center p-1">
                         <input type="checkbox" class="form-check-input" x-model="field.auto_increment" />
+                    </td>
+                    <td class="text-center p-1">
+                        <input type="checkbox" class="form-check-input" x-model="field.fillable" />
                     </td>
                     <td class="p-1">
                         <input class="form-control form-control-sm" x-model="field.default" />

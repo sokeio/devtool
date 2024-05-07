@@ -14,7 +14,7 @@
         addUIFromFields() {
             dataFields = $wire.data.fields.map((field, index) => {
                 return {
-                    id: 'row-' + (new Date()).getTime()+'-'+index,
+                    id: 'row-' + (new Date()).getTime() + '-' + index,
                     name: field.name,
                     title: field.name,
                     uiType: $wire.dbColumnTypes[field.type_name],
@@ -34,7 +34,7 @@
         }
     }">
         <template x-for="field in dataFields">
-            <div class="col-6" wire:sortable.item :data-sortable-id="field.id">
+            <div class="col-12" wire:sortable.item :data-sortable-id="field.id">
                 <div class="card mb-2 p-1 position-relative">
                     <button class="btn btn-danger btn-sm position-absolute top-0 end-0"
                         @click="dataFields.splice(dataFields.indexOf(field), 1)">X</button>

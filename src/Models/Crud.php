@@ -8,7 +8,7 @@ class Crud extends Model
 {
     protected $table = 'dev_crud';
     protected $fillable = [
-        'user_id', 'module', 'name', 'model', 'route', 'fields', 'form', 'table', 'config'
+        'user_id', 'module', 'name', 'model', 'route', 'table_name', 'fields', 'form', 'table', 'config'
     ];
     protected $guarded = [];
     protected $casts = [
