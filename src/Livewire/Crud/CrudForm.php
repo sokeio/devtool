@@ -91,10 +91,14 @@ class CrudForm extends Form
         }
         return null;
     }
+    private function checkModel()
+    {
+        return (isset($this->data->model) && $this->data->model && class_exists($this->data->model));
+    }
     public function loadFields()
     {
         $this->skipRender();
-        if ($this->data->model && $model = app($this->data->model)) {
+        if ($this->checkModel() && $model = app($this->data->model)) {
             $this->data->table_name = $model->getTable();
             $arr = explode('\\', $this->data->model);
             $this->data->model_name = $arr[count($arr) - 1];
@@ -121,22 +125,33 @@ class CrudForm extends Form
     }
     public function generateModel()
     {
-        GenerateModel::generate(
-            $this->data->module,
-            $this->data->table_name,
-            $this->data->model_name,
-            $this->data->fields,
-            $this->data->is_generate_migration == 'true'
-        );
-        $this->showMessage(__('Model generated successfully.' .
-            ($this->data->is_generate_migration == 'true' ? ' And migration created.' : '')));
+        if (
+            $this->data->table_name != '' &&
+            $this->data->model_name != '' &&
+            $this->data->fields &&
+            Module::has($this->data->module)
+        ) {
+            GenerateModel::generate(
+                $this->data->module,
+                $this->data->table_name,
+                $this->data->model_name,
+                $this->data->fields,
+                $this->data->is_generate_migration == 'true'
+            );
+            $this->showMessage(__('Model generated successfully.' .
+                ($this->data->is_generate_migration == 'true' ? ' And migration created.' : '')));
+        } else {
+            $this->showMessage(__('Model generation failed.'));
+        }
     }
     public function autoLoadTableName()
     {
-        if ($this->data->model && $model = app($this->data->model)) {
+        if ($this->checkModel() && $model = app($this->data->model)) {
             $this->data->table_name = $model->getTable();
             $arr = explode('\\', $this->data->model);
             $this->data->model_name = $arr[count($arr) - 1];
+        } else {
+            $this->data->model = '';
         }
     }
     protected function footerUI()
@@ -180,7 +195,7 @@ class CrudForm extends Form
         return UI::container([
             UI::prex('data', [
                 UI::row([
-                    UI::text('name')->label(__('Name'))->col12(),
+                    UI::text('name')->label(__('Name'))->col12()->required(),
                     UI::select('module')->label(__('Module'))->dataSource(function () {
                         return Module::getAll()->map(function ($item) {
                             return [
@@ -188,7 +203,7 @@ class CrudForm extends Form
                                 'title' => $item->name
                             ];
                         });
-                    })->col2(),
+                    })->col2()->required(),
                     UI::select('model')->label(__('Model'))->dataSource(function () {
                         return [
                             [
@@ -203,17 +218,17 @@ class CrudForm extends Form
                         ];
                     })->afterUI([
                         UI::button(__('Load Fields'))->wireClick('loadFields')
-                    ])->col4(),
-                    UI::text('route')->label(__('Route'))->col3(),
-                    UI::text('table_name')->label(__('Table Name'))->col3()
+                    ])->col4()->required(),
+                    UI::text('route')->label(__('Route'))->col3()->required(),
+                    UI::text('table_name')->label(__('Table Name'))->col3()->required()
                         ->attribute(' x-show="!($wire.data.model===\'\'|| $wire.data.model===undefined)&&$wire.data.table_name!==\'\'&& $wire.data.table_name!==undefined"')
                         ->attributeInput('
                         x-bind:disabled="!($wire.data.model===\'\'|| $wire.data.model===undefined)"
                         ')->valueDefault(''),
                     UI::div([
                         UI::row([
-                            UI::text('table_name')->label(__('Table Name'))->col3(),
-                            UI::text('model_name')->label(__('Model Name'))->col3(),
+                            UI::text('table_name')->label(__('Table Name'))->col3()->required(),
+                            UI::text('model_name')->label(__('Model Name'))->col3()->required(),
                             UI::toggle('is_generate_migration')->label(__('Generate Migration'))->col3()->noSave(),
                         ]),
                         UI::button(__('Generate Model'))->success()->wireClick('generateModel()')
@@ -226,7 +241,7 @@ class CrudForm extends Form
                             return [];
                         })
                         ->col12()
-                        ->expanded(),
+                        ->expanded()->required(),
                     UI::templateField('form')
                         ->label(__('Form UI'))
                         ->templateView('devtool::crud.form')
