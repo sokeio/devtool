@@ -4,6 +4,7 @@ namespace Sokeio\Devtool\Console;
 
 use Illuminate\Console\Command;
 use Sokeio\Devtool\GenerateCrud;
+use Sokeio\Devtool\GenerateModel;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -31,7 +32,9 @@ class Test extends Command
      */
     public function handle()
     {
-        GenerateCrud::generate(2);
+        $tableJson = json_decode(file_get_contents(__DIR__ . '/crud_Tag.json'),true);
+        // GenerateCrud::generate(2);
+        GenerateModel::generate($tableJson['module'], $tableJson['table_name'], 'abc', $tableJson['fields'],true);
         //
         $this->info('ok');
         return 0;

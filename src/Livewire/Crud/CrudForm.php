@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Sokeio\Components\Form;
 use Sokeio\Components\UI;
 use Sokeio\Devtool\GenerateCrud;
+use Sokeio\Devtool\GenerateModel;
 use Sokeio\Devtool\Models\Crud;
 use Sokeio\Facades\Module;
 use Sokeio\Facades\Platform;
@@ -95,6 +96,8 @@ class CrudForm extends Form
         $this->skipRender();
         if ($this->data->model && $model = app($this->data->model)) {
             $this->data->table_name = $model->getTable();
+            $arr = explode('\\', $this->data->model);
+            $this->data->model_name = $arr[count($arr) - 1];
             $columns = Schema::getColumns($this->data->table_name);
             $fillable = $model->getFillable();
             $this->data->fields = collect($columns)->map(function ($item) use ($fillable) {
@@ -116,6 +119,27 @@ class CrudForm extends Form
         GenerateCrud::generate($this->dataId);
         $this->showMessage(__('Crud generated successfully.'));
     }
+    public function generateModel()
+    {
+        if()
+        GenerateModel::generate(
+            $this->data->module,
+            $this->data->table_name,
+            $this->data->model_name,
+            $this->data->fields,
+            $this->data->is_generate_migration == 'true'
+        );
+        $this->showMessage(__('Model generated successfully.' .
+            ($this->data->is_generate_migration == 'true' ? ' And migration created.' : '')));
+    }
+    public function autoLoadTableName()
+    {
+        if ($this->data->model && $model = app($this->data->model)) {
+            $this->data->table_name = $model->getTable();
+            $arr = explode('\\', $this->data->model);
+            $this->data->model_name = $arr[count($arr) - 1];
+        }
+    }
     protected function footerUI()
     {
         return [
@@ -132,7 +156,6 @@ class CrudForm extends Form
                         element.setAttribute('type', 'file');
                         element.click();
                         element.onchange = () => {
-                            
                             let file = element.files[0];
                             let reader = new FileReader();
                             reader.readAsText(file, 'UTF-8');
@@ -171,7 +194,7 @@ class CrudForm extends Form
                         return [
                             [
                                 'id' => '',
-                                'title' => 'None'
+                                'title' => 'Create New Model'
                             ], ...collect(Platform::getModels())->map(function ($item, $key) {
                                 return [
                                     'id' => $key,
@@ -182,15 +205,21 @@ class CrudForm extends Form
                     })->afterUI([
                         UI::button(__('Load Fields'))->wireClick('loadFields')
                     ])->col4(),
+                    UI::text('route')->label(__('Route'))->col3(),
                     UI::text('table_name')->label(__('Table Name'))->col3()
+                        ->attribute(' x-show="!($wire.data.model===\'\'|| $wire.data.model===undefined)&&$wire.data.table_name!==\'\'&& $wire.data.table_name!==undefined"')
                         ->attributeInput('
                         x-bind:disabled="!($wire.data.model===\'\'|| $wire.data.model===undefined)"
-                        ')
-                        ->afterUI([
-                            UI::button(__('Generate Model'))->wireClick('generateModel()')
-                                ->attribute(' x-show="$wire.data.model===\'\'|| $wire.data.model===undefined" ')
-                        ])->valueDefault(''),
-                        UI::text('route')->label(__('Route'))->col3(),
+                        ')->valueDefault(''),
+                    UI::div([
+                        UI::row([
+                            UI::text('table_name')->label(__('Table Name'))->col3(),
+                            UI::text('model_name')->label(__('Model Name'))->col3(),
+                            UI::toggle('is_generate_migration')->label(__('Generate Migration'))->col3()->noSave(),
+                        ]),
+                        UI::button(__('Generate Model'))->success()->wireClick('generateModel()')
+                    ])->className('p-2 border rounded border-gray-200 mb-2')
+                        ->attribute(' x-show="$wire.data.model===\'\'|| $wire.data.model===undefined" '),
                     UI::templateField('fields')
                         ->label(__('Fields'))
                         ->templateView('devtool::crud.fields')

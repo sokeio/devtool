@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('module')->nullable();
             $table->string('name')->nullable();
             $table->string('model')->nullable();
+            $table->string('model_name')->nullable();
             $table->string('route')->nullable();
             $table->string('table_name')->nullable();
             $table->string('table_title')->nullable();
@@ -36,6 +37,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('model')->nullable();
             $table->string('route')->nullable();
+            $table->string('model_name')->nullable();
             $table->string('table_name')->nullable();
             $table->string('table_title')->nullable();
             $table->json('fields')->nullable();

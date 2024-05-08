@@ -1,0 +1,15 @@
+<?php
+
+namespace ##$namespace$##\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class ##$model_name$## extends Model
+{
+    protected $table = '##$table_name$##';
+    protected $fillable = [
+        ##$fillable$##
+    ];
+    protected $guarded = [];
+    protected $casts = [];
+}
