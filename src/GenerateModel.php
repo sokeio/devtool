@@ -53,69 +53,141 @@ class GenerateModel
         file_put_contents($this->module->getPath('src/Models/' . $this->model_name . '.php'), $content);
     }
     private $dbColumnTypes = [
-        'varchar' => [
-            'name' => 'string',
-            'default' => 255,
+        'varchar'    => [
+            'name'     => 'string',
+            'default'  => 255,
         ],
-        'nvarchar' => [
-            'name' => 'string',
-            'default' => 255,
+        'nvarchar'   => [
+            'name'     => 'string',
+            'default'  => 255,
         ],
-        'text' => [
-            'name' => 'text',
-            'default' => null,
+        'text'       => [
+            'name'     => 'text',
+            'default'  => null,
         ],
-        'int' => [
-            'name' => 'integer',
-            'default' => null,
+        'int'        => [
+            'name'     => 'integer',
+            'default'  => null,
         ],
-        'bigint' => [
-            'name' => 'bigInteger',
-            'default' => null,
+        'bigint'     => [
+            'name'     => 'bigInteger',
+            'default'  => null,
         ],
-        'float' => [
-            'name' => 'float',
-            'default' => null,
+        'float'      => [
+            'name'     => 'float',
+            'default'  => null,
         ],
-        'double' => [
-            'name' => 'double',
-            'default' => null,
+        'double'     => [
+            'name'     => 'double',
+            'default'  => null,
         ],
-        'decimal' => [
-            'name' => 'decimal',
-            'default' => '8,2',
+        'decimal'    => [
+            'name'     => 'decimal',
+            'default'  => '8,2',
         ],
-        'date' => [
-            'name' => 'date',
-            'default' => null,
+        'date'       => [
+            'name'     => 'date',
+            'default'  => null,
         ],
-        'datetime' => [
-            'name' => 'dateTime',
-            'default' => null,
+        'datetime'   => [
+            'name'     => 'dateTime',
+            'default'  => null,
         ],
-        'timestamp' => [
-            'name' => 'timestamp',
-            'default' => null,
+        'timestamp'  => [
+            'name'     => 'timestamp',
+            'default'  => null,
         ],
-        'time' => [
-            'name' => 'time',
-            'default' => null,
+        'time'       => [
+            'name'     => 'time',
+            'default'  => null,
         ],
-        'tinyint' => [
-            'name' => 'tinyInteger',
-            'default' => null,
+        'tinyint'    => [
+            'name'     => 'tinyInteger',
+            'default'  => null,
         ],
-        'bit' => [
-            'name' => 'boolean',
-            'default' => null,
+        'bit'        => [
+            'name'     => 'boolean',
+            'default'  => null,
         ],
-        'json' => [
-            'name' => 'json',
-            'default' => null,
+        'json'       => [
+            'name'     => 'json',
+            'default'  => null,
         ],
-        'enum' => [
-            'name' => 'enum',
-            'default' => null,
+        'enum'       => [
+            'name'     => 'enum',
+            'default'  => null,
+        ],
+        'mediumint'  => [
+            'name'     => 'mediumInteger',
+            'default'  => null,
+        ],
+        'smallint'   => [
+            'name'     => 'smallInteger',
+            'default'  => null,
+        ],
+        'binary'     => [
+            'name'     => 'binary',
+            'default'  => null,
+        ],
+        'longtext'   => [
+            'name'     => 'longText',
+            'default'  => null,
+        ],
+        'mediumtext' => [
+            'name'     => 'mediumText',
+            'default'  => null,
+        ],
+        'tinytext'   => [
+            'name'     => 'tinyText',
+            'default'  => null,
+        ],
+        'char'       => [
+            'name'     => 'char',
+            'default'  => null,
+        ],
+        'varbinary'  => [
+            'name'     => 'binary',
+            'default'  => null,
+        ],
+        'year'       => [
+            'name'     => 'year',
+            'default'  => null,
+        ],
+        'set'        => [
+            'name'     => 'set',
+            'default'  => null,
+        ],
+        'geometry'   => [
+            'name'     => 'geometry',
+            'default'  => null,
+        ],
+        'point'      => [
+            'name'     => 'point',
+            'default'  => null,
+        ],
+        'linestring' => [
+            'name'     => 'lineString',
+            'default'  => null,
+        ],
+        'polygon'    => [
+            'name'     => 'polygon',
+            'default'  => null,
+        ],
+        'multipoint' => [
+            'name'     => 'multiPoint',
+            'default'  => null,
+        ],
+        'multilinestring' => [
+            'name'     => 'multiLineString',
+            'default'  => null,
+        ],
+        'multipolygon'    => [
+            'name'     => 'multiPolygon',
+            'default'  => null,
+        ],
+        'geometrycollection' => [
+            'name'     => 'geometryCollection',
+            'default'  => null,
         ],
     ];
     private function generateField($field)
