@@ -17,6 +17,28 @@ class Crud extends Model
         'form' => 'array',
         'table' => 'array'
     ];
+    protected static function boot()
+    {
+        parent::boot();
+        self::created(function ($model) {
+            $model->Logs()->create([
+                ...$model->toArray(),
+                'user_id' => auth()->user()?->id,
+            ]);
+        });
+        self::updated(function ($model) {
+            $model->Logs()->create([
+                ...$model->toArray(),
+                'user_id' => auth()->user()?->id,
+            ]);
+        });
+        self::saved(function ($model) {
+            $model->Logs()->create([
+                ...$model->toArray(),
+                'user_id' => auth()->user()?->id,
+            ]);
+        });
+    }
     public function Logs()
     {
         return $this->hasMany(CrudLog::class, 'dev_crud_id', 'id');

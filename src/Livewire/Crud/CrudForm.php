@@ -121,7 +121,6 @@ class CrudForm extends Form
     }
     public function generateModel()
     {
-        if()
         GenerateModel::generate(
             $this->data->module,
             $this->data->table_name,
