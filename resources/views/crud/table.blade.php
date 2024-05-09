@@ -1,9 +1,9 @@
 <div x-data="{
     initField() {
-            if (dataFields === undefined) { dataFields = []; }
+            if (fieldValue === undefined) { fieldValue = []; }
         },
         addField() {
-            dataFields.push({
+            fieldValue.push({
                 id: 'row-' + (new Date()).getTime(),
                 name: '',
                 title: '',
@@ -12,7 +12,7 @@
             });
         },
         addUIFromFields() {
-            dataFields = $wire.data.fields.map((field, index) => {
+            fieldValue = $wire.data.fields.map((field, index) => {
                 return {
                     id: 'row-' + (new Date()).getTime() + '-' + index,
                     name: field.name,
@@ -23,7 +23,7 @@
             });
         },
         addUIFromForm() {
-            dataFields = $wire.data.form.map((field, index) => {
+            fieldValue = $wire.data.form.map((field, index) => {
                 return {
                     id: 'row-' + (new Date()).getTime() + '-' + index,
                     name: field.name,
@@ -40,16 +40,16 @@
     <div class="row" wire:sortable x-data="{
         onSortable(items) {
             let temp = items.map(item => {
-                return dataFields.find(field => field.id == item.value);
+                return fieldValue.find(field => field.id == item.value);
             });
-            dataFields = temp;
+            fieldValue = temp;
         }
     }">
-        <template x-for="field in dataFields">
-            <div class="col-12" wire:sortable.item :data-sortable-id="field.id">
+        <template x-for="field in fieldValue">
+            <div class="col-12 item-hover" wire:sortable.item :data-sortable-id="field.id">
                 <div class="card mb-2 p-1 position-relative">
                     <button class="btn btn-danger btn-sm position-absolute top-0 end-0"
-                        @click="dataFields.splice(dataFields.indexOf(field), 1)">X</button>
+                        @click="fieldValue.splice(fieldValue.indexOf(field), 1)">X</button>
                     <div class="row">
                         <div class="col-4">
                             <div class="mb-3">

@@ -1,9 +1,9 @@
 <div x-data="{
     initField() {
-            if (dataFields === undefined) { dataFields = []; }
+            if (fieldValue === undefined) { fieldValue = []; }
         },
         addField() {
-            dataFields.push({
+            fieldValue.push({
                 id: 'row-' + (new Date()).getTime(),
                 name: '',
                 type_name: '',
@@ -16,7 +16,7 @@
             });
         },
         clearField() {
-            dataFields = [];
+            fieldValue = [];
         },
         autoloadTable(){
             $wire.autoLoadTableName();
@@ -42,13 +42,13 @@
             <tbody wire:sortable x-data="{
                 onSortable(items) {
                     let temp = items.map(item => {
-                        return dataFields.find(field => field.name == item.value);
+                        return fieldValue.find(field => field.name == item.value);
                     });
-                    dataFields = temp;
+                    fieldValue = temp;
                 }
             }">
-                <template x-for="field in dataFields">
-                    <tr wire:sortable.item :data-sortable-id="field.name">
+                <template x-for="field in fieldValue">
+                    <tr wire:sortable.item :data-sortable-id="field.name" class="item-hover">
                         <td class="p-1">
                             <input class="form-control form-control-sm" x-model="field.name" />
                         </td>
@@ -80,7 +80,7 @@
                         </td>
                         <td class="text-center p-1">
                             <button class="btn btn-danger btn-sm"
-                                @click="dataFields.splice(dataFields.indexOf(field), 1)">X</button>
+                                @click="fieldValue.splice(fieldValue.indexOf(field), 1)">X</button>
                         </td>
                     </tr>
                 </template>
