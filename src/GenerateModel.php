@@ -68,10 +68,12 @@ class GenerateModel
         'int'        => [
             'name'     => 'integer',
             'default'  => null,
+            'no_length' => true,
         ],
         'bigint'     => [
             'name'     => 'bigInteger',
             'default'  => null,
+            'no_length' => true,
         ],
         'float'      => [
             'name'     => 'float',
@@ -104,6 +106,7 @@ class GenerateModel
         'tinyint'    => [
             'name'     => 'tinyInteger',
             'default'  => null,
+            'no_length' => true,
         ],
         'bit'        => [
             'name'     => 'boolean',
@@ -195,7 +198,13 @@ class GenerateModel
         $fieldText = '';
         $dbType = $this->dbColumnTypes[$field['type']];
         $fieldText .= '        $table->' . $dbType['name'] . '("' . $field['name'] . '"';
-        if ($field['length'] != null && $field['length'] != '' && $field['length'] != '0' && $field['length'] != $dbType['default']) {
+        if (
+            $field['length'] != null &&
+            $field['length'] != '' &&
+            $field['length'] != '0' &&
+            $field['length'] != $dbType['default'] &&
+            (!isset($dbType['no_length']) || $dbType['no_length'] !== true)
+        ) {
             $fieldText .= ',' . $field['length'] . ')';
         } else {
             $fieldText .= ')';
