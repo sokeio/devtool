@@ -34,8 +34,8 @@
         }
     }">
         <template x-for="field in fieldValue">
-            <div class="col-6 item-hover" wire:sortable.item :data-sortable-id="field.id">
-                <div class="card mb-2 p-1 position-relative">
+            <div class="col-6 " wire:sortable.item :data-sortable-id="field.id">
+                <div class="card mb-2 p-1 position-relative item-bg-hover">
                     <button class="btn btn-danger btn-sm position-absolute top-0 end-0"
                         @click="fieldValue.splice(fieldValue.indexOf(field), 1)">X</button>
                     <div class="row">

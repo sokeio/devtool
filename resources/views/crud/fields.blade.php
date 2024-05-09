@@ -48,7 +48,7 @@
                 }
             }">
                 <template x-for="field in fieldValue">
-                    <tr wire:sortable.item :data-sortable-id="field.name" class="item-hover">
+                    <tr wire:sortable.item :data-sortable-id="field.name" class="item-bg-hover">
                         <td class="p-1">
                             <input class="form-control form-control-sm" x-model="field.name" />
                         </td>

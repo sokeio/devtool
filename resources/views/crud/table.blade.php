@@ -16,7 +16,7 @@
                 return {
                     id: 'row-' + (new Date()).getTime() + '-' + index,
                     name: field.name,
-                    title: field.title??field.name,
+                    title: field.title ?? field.name,
                     uiType: $wire.dbColumnTypes[field.type_name],
                     options: []
                 }
@@ -46,8 +46,8 @@
         }
     }">
         <template x-for="field in fieldValue">
-            <div class="col-12 item-hover" wire:sortable.item :data-sortable-id="field.id">
-                <div class="card mb-2 p-1 position-relative">
+            <div class="col-12 " wire:sortable.item :data-sortable-id="field.id">
+                <div class="card mb-2 p-1 position-relative item-bg-hover">
                     <button class="btn btn-danger btn-sm position-absolute top-0 end-0"
                         @click="fieldValue.splice(fieldValue.indexOf(field), 1)">X</button>
                     <div class="row">
