@@ -215,12 +215,18 @@ class CrudForm extends Form
                 UI::row([
                     UI::text('name')->label(__('Name'))->col12()->required(),
                     UI::select('module')->label(__('Module'))->dataSource(function () {
-                        return Module::getAll()->map(function ($item) {
-                            return [
-                                'id' => $item->id,
-                                'title' => $item->name
-                            ];
-                        });
+                        return [
+                            [
+                                'id' => '',
+                                'title' => 'Create New Model'
+                            ],
+                            ...Module::getAll()->map(function ($item) {
+                                return [
+                                    'id' => $item->id,
+                                    'title' => $item->name
+                                ];
+                            })
+                        ];
                     })->col2()->required(),
                     UI::select('model')->label(__('Model'))->dataSource(function () {
                         return [
